@@ -1,0 +1,56 @@
+/*GAME BOARD*/
+
+.gameBoard {
+	text-align: center;
+}
+.row {
+	margin: 0;
+	font-size: 0;
+}
+
+.gameSquare {
+	background-color: black;
+	width: 30px;
+	height: 30px;
+	display: inline-block;
+	/*margin: 3px 5px;*/
+/*	border-style: solid;
+	border-color: white;
+	border-width: 1px;*/
+}
+
+.pacman {
+	background-image: url('../images/mario.gif');
+	background-repeat: none;
+	background-position: center;
+	background-size: 100%;
+}
+
+
+.wall {
+	background-image: url('../images/wall.png');
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.dot {
+	background-image: url('../images/coin.gif');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 30%;
+}
+
+.fruit {
+	background-image: url('../images/mushroom.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 75%;
+}
+
+.ghost {
+	background-image: url('../images/ghost.gif');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 90%;
+}
+
