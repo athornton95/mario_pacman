@@ -2,7 +2,17 @@
 
 .gameBoard {
 	text-align: center;
+	/*border-style: 
+	border-image-source: url(../images/wall_2.png);
+	border-image-width: 30px;
+	border-image-repeat: none;
+	border-image-slice: 30px;*/
+	/*border-style: solid;
+	border-color: red;*/
+	/*max-width: 780px;*/
+	margin: auto;
 }
+
 .row {
 	margin: 0;
 	font-size: 0;
@@ -28,9 +38,10 @@
 
 
 .wall {
-	background-image: url('../images/wall.png');
+	background-image: url('../images/wall_2.png');
 	background-repeat: no-repeat;
 	background-position: center;
+	background-size: 100%;
 }
 
 .dot {
@@ -54,3 +65,51 @@
 	background-size: 90%;
 }
 
+.bowser {
+	background-image: url('../images/bowser.gif');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 90%;
+}
+
+.peach {
+	background-image: url('../images/peach.gif');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 90%;
+}
+
+.fire {
+	background-image: url('../images/fire.gif');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 100%;
+}
+
+.bones {
+	background-image: url('../images/bones.gif');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 90%;
+}
+
+.warpOne {
+	background-image: url('../images/warpOne.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 100%;
+}
+
+.warpTwo {
+	background-image: url('../images/warpTwo.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 100%;
+}
+
+.warpThree {
+	background-image: url('../images/warpThree.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 100%;
+}
