@@ -1,15 +1,26 @@
 let seconds = 0;
 
+let ghostOneInterval;
+let ghostTwoInterval;
+let ghostThreeInterval;
+let ghostFourInterval;
+let bowserInterval;
+let bonesOneInterval;
+let bonesTwoInterval;
+let pacmanInterval;
+
 
 
 //KeyCodes
 $('body').keydown((e) => {
 	if(e.keyCode === 37){
 		pacman.direction ='left';
-		// $('.pacman').css('background-image', 'url:"../images/mario_2.gif');
+		// $('.pacman').removeClass('pacman');
+		// $(`gameSquare[x="${pacman.x}"][y="${pacman.y}"]`).addClass('pacmanTwo');
 	} else if(e.keyCode === 39){
 		pacman.direction ='right';
-		// $('.pacman').c
+		// $('.pacmanTwo').removeClass('pacmanTwo');
+		// $(`gameSquare[x="${pacman.x}"][y="${pacman.y}"]`).addClass('pacman');
 	} else if(e.keyCode === 38){
 		pacman.direction = 'up';
 	} else if(e.keyCode === 40){
@@ -42,15 +53,54 @@ const secondsGoUp = () => {
  }
 
 //GAME OVER
- const gameOver = () => {
- 		$('.pacman').removeClass('pacman');
+const gameOver = () => {
+
  		clearInterval(timePassing);
+ 		$(`.gameSquare[x="13"][y="8"]`).addClass('fire');
+		clearInterval(bowserInterval);
+		$('.pacman').removeClass('pacman');
+		clearInterval(pacmanInterval);
+		clearInterval(ghostOneInterval);
+		clearInterval(ghostTwoInterval);
+		clearInterval(ghostThreeInterval);
+		clearInterval(ghostFourInterval);
+		clearInterval(bonesOneInterval);
+		clearInterval(bonesTwoInterval);
+		if($('.gameSquare').hasClass('dot')){
+			$('.gameSquare').removeClass('dot');
+		}
+		if($('.gameSquare').hasClass('fruit')){
+			$('.gameSquare').removeClass('fruit');
+		}
  		$('body').append('<div class = gameOver>GAME OVER</div>');
 		}
+
+
+//buttons 
+
+$('#playGame').on('click', () => {
+	console.log('this clicks');
+	$('.title').empty();
+	$('.buttons').empty();
+	start();
+})
+
 
 //WINNER
 const winner = () => {
 	clearInterval(timePassing);
+	clearInterval(ghostOneInterval);
+	$('.ghost').removeClass('ghost');
+	clearInterval(ghostTwoInterval);
+	clearInterval(ghostThreeInterval);
+	clearInterval(ghostFourInterval);
+	clearInterval(bowserInterval);
+	clearInterval(bonesOneInterval);
+	$('.bones').removeClass('bones');
+	clearInterval(bonesTwoInterval);
+	$('.bowser').removeClass('bowser');
+	$('.fire').removeClass('fire');
+
 	//stop bowser, ghosts, & bones & clears their divs
 	//clear divs below mario & peach
 	//append text to divs : YOU WON
@@ -64,7 +114,7 @@ const pacman = {
 	x : 0,
 	y : 0,
 	direction : 'left',
-	points: 0,
+	points: 124,
 	lives: 2,
 	move(){
 		$('.pacman').removeClass('pacman');
@@ -92,11 +142,14 @@ const pacman = {
 			this.y = 0;
 			this.lives--;
 			checkLives();
-		} else if(this.direction === 'left' && this.x > 0 && $(`.gameSquare[x="${this.x - 1}"][y="${this.y}"]`).hasClass('fire')){
+		} else if(this.direction === 'left' && this.x > 0 && $(`.gameSquare[x="${this.x - 1}"][y="${this.y}"]`).hasClass('bowser')){
 			this.lives = 0;
 			checkLives();
+		} else if(this.direction === 'left' && this.x > 0 && $(`.gameSquare[x="${this.x - 1}"][y="${this.y}"]`).hasClass('fire')){
+			this.lives--;
+			checkLives();
 		} else if(this.direction === 'left' && this.x > 0 && $(`.gameSquare[x="${this.x - 1}"][y="${this.y}"]`).hasClass('peach')){
-			console.log('you won!!');
+			winner();
 		} else if(this.direction === 'left' & this.x === 0 && this.y === 10){
 			if(Math.random() > .33){
 				this.x = 25;
@@ -147,8 +200,11 @@ const pacman = {
 			this.y = 0;
 			this.lives--;
 			checkLives();
-		} else if(this.direction === 'right' && this.x < 25 && $(`.gameSquare[x="${this.x + 1}"][y="${this.y}"]`).hasClass('fire')){
+		} else if(this.direction === 'right' && this.x < 25 && $(`.gameSquare[x="${this.x + 1}"][y="${this.y}"]`).hasClass('bowser')){
 			this.lives = 0;
+			checkLives();
+		} else if(this.direction === 'right' && this.x < 25 && $(`.gameSquare[x="${this.x + 1}"][y="${this.y}"]`).hasClass('fire')){
+			this.lives--;
 			checkLives();
 		} else if(this.direction === 'right' & this.x === 25 && this.y === 10){
 			if(Math.random() > .33){
@@ -199,8 +255,11 @@ const pacman = {
 			this.y = 0;
 			this.lives--;
 			checkLives();
-		} else if(this.direction === 'up' && this.y < 14 && $(`.gameSquare[x="${this.x}"][y="${this.y + 1}"]`).hasClass('fire')){
+		} else if(this.direction === 'up' && this.y < 14 && $(`.gameSquare[x="${this.x}"][y="${this.y + 1}"]`).hasClass('bowser')){
 			this.lives = 0;
+			checkLives();
+		} else if(this.direction === 'up' && this.y < 14 && $(`.gameSquare[x="${this.x}"][y="${this.y + 1}"]`).hasClass('fire')){
+			this.lives--;
 			checkLives();
 		} else if(this.direction === 'up' && this.y < 14){
 			this.y++;
@@ -229,8 +288,11 @@ const pacman = {
 			this.x = 0;
 			this.lives--;
 			checkLives();
-		} else if(this.direction === 'down' && this.y > 0 && $(`.gameSquare[x="${this.x}"][y="${this.y - 1}"]`).hasClass('fire')){
+		} else if(this.direction === 'down' && this.y > 0 && $(`.gameSquare[x="${this.x}"][y="${this.y - 1}"]`).hasClass('bowser')){
 			this.lives = 0;
+			checkLives();
+		} else if(this.direction === 'down' && this.y > 0 && $(`.gameSquare[x="${this.x}"][y="${this.y - 1}"]`).hasClass('fire')){
+			this.lives--;
 			checkLives();
 		} else if(this.direction === 'down' && this.y > 0){
 			this.y--;
@@ -241,6 +303,9 @@ const pacman = {
 
 const checkLives = () => {
 	$('.lives').text(`${pacman.lives}`);
+	if(pacman.lives <= 0){
+		gameOver();
+	}
 }
 
 const checkPoints = () => {
@@ -260,9 +325,6 @@ const checkPoints = () => {
 	// 	$('body').append('<div class = winner>YOU WON</div>');
 	// }
 }
-//SCORE ELEMENTS
-$('body').append(`<div>Points: <span class = "points">${pacman.points}</span></div>`);
-$('body').append(`<div>Lives: <span class = "lives">${pacman.lives}</span></div>`);
 
 
 //GHOSTS
@@ -503,33 +565,33 @@ class Ghost {
 
 const addGhostOne = () => {
 	const ghostOne = new Ghost(0, 14, "ghostDown", 15, 0, 14, 6);
-	setInterval(() => {ghostOne.move()},
+	ghostOneInterval = setInterval(() => {ghostOne.move()},
 	200);
 	}
 
 const addGhostTwo = () => {
 	// $('.gameSquare[x="12"][y="7"]').addClass('ghost');
     const ghostTwo = new Ghost (25, 14, "ghostUp", 25, 10, 14, 6);
-    setInterval(() => {ghostTwo.move()},
+    ghostTwoInterval = setInterval(() => {ghostTwo.move()},
 	300);
 	}
 
 const addGhostThree = () => {
 	const ghostThree = new Ghost (0, 0, "ghostRight", 15, 0, 8, 0);
-    setInterval(() => {ghostThree.move()},
+    ghostThreeInterval = setInterval(() => {ghostThree.move()},
 	250);
 	}
 
 const addGhostFour = () => {
 	const ghostFour = new Ghost (25, 0, "ghostLeft", 25, 10, 8, 0);
-	setInterval(() => {ghostFour.move()},
+	ghostFourInterval = setInterval(() => {ghostFour.move()},
 	150);
 	}
 
 const addBowser = () => {
 	const bowser = new Bowser (13, 7, 18, 7, 11, 3, "ghostUp");
-	setInterval(() => {bowser.move()},
-	145);
+	bowserInterval = setInterval(() => {bowser.move()},
+	160);
 }
 
 //PRINCESS PEACH
@@ -541,30 +603,6 @@ const addPrincess = () => {
 //BOWSER 
 const addFire = () => {
 	$(`.gameSquare[x="12"][y="8"]`).addClass('fire');
-	if($(`.gameSquare[x="0"][y="2"]`).hasClass('dot')){
-		$(`.gameSquare[x="0"][y="2"]`).removeClass('dot');
-		$(`.gameSquare[x="0"][y="2"]`).addClass('fire');
-	} else {
-		$(`.gameSquare[x="0"][y="2"]`).addClass('fire');
-	}
-	if($(`.gameSquare[x="0"][y="10"]`).hasClass('dot')){
-		$(`.gameSquare[x="0"][y="10"]`).removeClass('dot');
-		$(`.gameSquare[x="0"][y="10"]`).addClass('fire');
-	} else {
-		$(`.gameSquare[x="0"][y="10"]`).addClass('fire');
-	}
-	if($(`.gameSquare[x="25"][y="10"]`).hasClass('dot')){
-		$(`.gameSquare[x="25"][y="10"]`).removeClass('dot');
-		$(`.gameSquare[x="25"][y="10"]`).addClass('fire');
-	} else {
-		$(`.gameSquare[x="25"][y="10"]`).addClass('fire');
-	}
-	if($(`.gameSquare[x="25"][y="2"]`).hasClass('dot')){
-		$(`.gameSquare[x="25"][y="2"]`).removeClass('dot');
-		$(`.gameSquare[x="25"][y="2"]`).addClass('fire');
-	} else {
-		$(`.gameSquare[x="25"][y="2"]`).addClass('fire');
-	}
 	console.log('fire has been added');
 }
 
@@ -592,10 +630,8 @@ class Bowser {
 		} else if(this.direction === 'ghostUp' && this.y < this.maxY && $(`.gameSquare[x="${this.x}"][y="${this.y + 1}"]`).hasClass('pacman')){
 			$(`.gameSquare[x="${this.x}"][y="${this.y + 1}"]`).removeClass('pacman');
 			this.y++;
-			pacman.lives = 0;
-			checkLives();
-			pacman.x = 0;
-			pacman.y = 0;
+			$('.pacman').removeClass('pacman');
+			gameOver();
 		} else if(this.direction === 'ghostUp' && this.y < this.maxY){
 			this.y++;
 
@@ -611,10 +647,8 @@ class Bowser {
 		} else if(this.direction === 'ghostDown' && this.y > this.minY && $(`.gameSquare[x="${this.x}"][y="${this.y - 1}"]`).hasClass('pacman')){
 			$(`.gameSquare[x="${this.x}"][y="${this.y - 1}"]`).removeClass('pacman');
 			this.y--;
-			pacman.lives = 0;
-			checkLives();
-			pacman.x = 0;
-			pacman.y = 0;
+			$('.pacman').removeClass('pacman');
+			gameOver();
 		} else if(this.direction === 'ghostDown' && this.y > this.minY){
 			this.y--;
 
@@ -631,10 +665,8 @@ class Bowser {
 		} else if(this.direction === 'ghostLeft' && this.x > this.minX && $(`.gameSquare[x="${this.x - 1}"][y="${this.y}"]`).hasClass('pacman')){
 			$(`.gameSquare[x="${this.x - 1}"][y="${this.y}"]`).removeClass('pacman');
 			this.x--;
-			pacman.lives = 0;
-			checkLives();
-			pacman.x = 0;
-			pacman.y = 0;
+			$('.pacman').removeClass('pacman');
+			gameOver();
 		} else if(this.direction === 'ghostLeft' && this.x > this.minX){
 			this.x--;
 
@@ -650,10 +682,8 @@ class Bowser {
 		} else if(this.direction === 'ghostRight' && this.x < this.maxX && $(`.gameSquare[x="${this.x + 1}"][y="${this.y}"]`).hasClass('pacman')){
 			$(`.gameSquare[x="${this.x + 1}"][y="${this.y}"]`).removeClass('pacman');
 			this.x++;
-			pacman.lives = 0;
-			checkLives();
-			pacman.x = 0;
-			pacman.y = 0;
+			$('.pacman').removeClass('pacman');
+			gameOver();
 		} else if(this.direction === 'ghostRight' && this.x < this.maxX){
 			this.x++;
 
@@ -882,20 +912,24 @@ class Bones {
 const addBones = () => {
 	const bonesOne = new Bones (8, 5, 11, 5, "ghostUp");
 	const bonesTwo = new Bones (17, 11, 11, 5, 'ghostDown');
-	setInterval(() => {bonesOne.move()},
+	bonesOneInterval = setInterval(() => {bonesOne.move()},
 	300);
-	setInterval(() => {bonesTwo.move()},
+	bonesTwoInterval = setInterval(() => {bonesTwo.move()},
 	300);
 	console.log('bones made');
 }
 // GENERATE GAME BOARD
-$('body').append('<div class="gameBoard"></div>');
-for(let y = 15; y > -2; y--){
+
+const buildBoard = () => {
+	$('body').append('<div class="gameBoard"></div>');
+	for(let y = 15; y > -2; y--){
 	$('.gameBoard').append(`<div class="row" id = "row_${y}"></div>`);
 	for(let x = -1; x < 27; x++){
 		$(`#row_${y}`).append(`<div class = "gameSquare" y = "${y}" x = "${x}"></div>`);
 	}
-}
+	}
+	}
+
 
 
 // BUILD GAME
@@ -1441,18 +1475,23 @@ const buildFruit = () => {
 
 // START
 
-const start = () => {
-	$('.gameSquare[x="0"][y="0"]').addClass('pacman');
-	playGame();
 
+
+
+const start = () => {
+	playGame();
+	buildBoard();
 	buildDots();
 	buildWarp();
 	buildFruit();
 	buildMaze();
+	$('.gameSquare[x="0"][y="0"]').addClass('pacman');
 	addBones();
+	//SCORE ELEMENTS
+	$('body').append(`<div class = "stats">Coins: <span class = "points">${pacman.points}</span>  Lives:<span class = "lives">${pacman.lives}</span></div>`);
 
-	setInterval(() => {pacman.move()},
+	pacmanInterval = setInterval(() => {pacman.move()},
 		300);
-	}
+}
 
 

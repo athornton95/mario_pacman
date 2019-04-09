@@ -1,5 +1,58 @@
 /*GAME BOARD*/
 
+*:focus {
+    outline: none;
+}
+
+
+body {
+	font-family: 'Press Start 2P', cursive;
+	background-image: url('../images/mainTwo.jpg');
+	background-repeat: no-repeat;
+	/*background-position: center;*/
+	background-size: 100%;
+	color: white;
+
+}
+
+.buttons {
+	text-align: center;
+	margin-top: 100px;
+}
+
+.classicButton:hover {
+	color: yellow;
+}
+
+.classicButton {
+	border-style: solid;
+	border-color: rgba(0,0,0,0);
+	border-radius: 0px;
+	background-color: rgba(0,0,0,0);
+	font-size: 32px;
+	color: white;
+	font-family: 'Press Start 2P', cursive;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+
+.stats {
+	color: yellow;
+	text-align: center;
+	margin-top: 50px;
+}
+footer {
+	/*color: white;*/
+	margin: 0 auto;
+	position: absolute;
+	bottom: 10px;
+}
+.title {
+	text-align: center;
+	margin-top: 100px;
+}
+
 .gameBoard {
 	text-align: center;
 	/*border-style: 
@@ -36,6 +89,12 @@
 	background-size: 100%;
 }
 
+.pacmanTwo {
+	background-image: url('../images/mario_2.gif');
+	background-repeat: none;
+	background-position: center;
+	background-size: 100%;
+}
 
 .wall {
 	background-image: url('../images/wall_2.png');
@@ -76,7 +135,7 @@
 	background-image: url('../images/peach.gif');
 	background-repeat: no-repeat;
 	background-position: center;
-	background-size: 90%;
+	background-size: 100%;
 }
 
 .fire {
