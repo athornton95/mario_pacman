@@ -9,11 +9,13 @@ body {
 	background-image: url('../images/mainTwo.jpg');
 	background-repeat: no-repeat;
 	/*background-position: center;*/
-	background-size: cover;
-	/*margin: auto;*/
+	background-size: relative;
 	color: white;
-	/*background-position: center center;*/
-	/*resize: both;*/
+}
+
+.container {
+	width: 100%;
+	height: 100%;
 }
 
 .buttons {
@@ -95,8 +97,14 @@ footer {
 	background-size: 100%;
 }
 
-.pacmanTwo {
+/*.pacmanTwo {
 	background-image: url('../images/mario_2.gif');
+	background-repeat: none;
+	background-position: center;
+	background-size: 100%;
+}*/
+.pacmanThree {
+	background-image: url('../images/mario_3.gif');
 	background-repeat: none;
 	background-position: center;
 	background-size: 100%;

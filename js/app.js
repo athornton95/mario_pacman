@@ -15,7 +15,7 @@ let pacmanInterval;
 $('body').keydown((e) => {
 	if(e.keyCode === 37){
 		pacman.direction ='left';
-		// $('.pacman').removeClass('pacman');
+		// $(`.gameSquare[x="${pacman.x}"][y="${pacman.y}"`).removeClass('pacman');
 		// $(`gameSquare[x="${pacman.x}"][y="${pacman.y}"]`).addClass('pacmanTwo');
 	} else if(e.keyCode === 39){
 		pacman.direction ='right';
@@ -195,6 +195,8 @@ const pacman = {
 				gameOver();
 			}
 		} else if(this.direction === 'left' && this.x > 0 && $(`.gameSquare[x="${this.x - 1}"][y="${this.y}"]`).hasClass('peach')){
+			$(`.gameSquare[x="${this.x}"][y="${this.y}"]`).removeClass('pacman');
+			$(`.gameSquare[x="${this.x}"][y="${this.y}"]`).addClass('pacmanThree');
 			winner();
 		} else if(this.direction === 'left' & this.x === 0 && this.y === 10){
 			if(Math.random() > .33){
@@ -1040,7 +1042,7 @@ const addBones = () => {
 // GENERATE GAME BOARD
 
 const buildBoard = () => {
-	$('body').append('<div class="gameBoard"></div>');
+	$('.container').append('<div class="gameBoard"></div>');
 	for(let y = 15; y > -2; y--){
 	$('.gameBoard').append(`<div class="row" id = "row_${y}"></div>`);
 	for(let x = -1; x < 27; x++){
@@ -1607,7 +1609,7 @@ const start = () => {
 	$('.gameSquare[x="0"][y="0"]').addClass('pacman');
 	addBones();
 	//SCORE ELEMENTS
-	$('body').append(`<div class = "stats">Coins: <span class = "points">${pacman.points}</span>  Lives:<span class = "lives">${pacman.lives}</span></div>`);
+	$('.container').append(`<div class = "stats">Coins: <span class = "points">${pacman.points}</span>  Lives:<span class = "lives">${pacman.lives}</span></div>`);
 
 	pacmanInterval = setInterval(() => {pacman.move()},
 		300);
