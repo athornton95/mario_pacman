@@ -54,11 +54,11 @@ const secondsGoUp = () => {
 
 //GAME OVER
 const gameOver = () => {
-
- 		clearInterval(timePassing);
+	console.log('here',$('.pacman') );
+		$('.pacman').removeClass('pacman');
+		console.log('here',$('.pacman') );
  		$(`.gameSquare[x="13"][y="8"]`).addClass('fire');
 		clearInterval(bowserInterval);
-		$('.pacman').removeClass('pacman');
 		clearInterval(pacmanInterval);
 		clearInterval(ghostOneInterval);
 		clearInterval(ghostTwoInterval);
@@ -66,14 +66,18 @@ const gameOver = () => {
 		clearInterval(ghostFourInterval);
 		clearInterval(bonesOneInterval);
 		clearInterval(bonesTwoInterval);
+		$('audio').remove();
+		$('body').append('<audio autoplay><source src="lose.mp3" type="audio/mpeg"></audio>');
 		if($('.gameSquare').hasClass('dot')){
 			$('.gameSquare').removeClass('dot');
 		}
 		if($('.gameSquare').hasClass('fruit')){
 			$('.gameSquare').removeClass('fruit');
 		}
- 		$('body').append('<div class = gameOver>GAME OVER</div>');
-		}
+ 		$('.stats').empty();
+		$('.stats').text('GAME OVER');
+		clearInterval(timePassing);
+	}
 
 
 //buttons 
@@ -82,24 +86,40 @@ $('#playGame').on('click', () => {
 	console.log('this clicks');
 	$('.title').empty();
 	$('.buttons').empty();
+	$('.instructions').empty();
+	$('body').append('<audio autoplay><source src="theme.mp3" type="audio/mpeg"></audio>');
 	start();
+})
+
+$('#instructions').on('click', () => {
+	console.log('this clicks');
+	$('.instructions').append('<p>PRINCESS PEACH HAS BEEN KIDNAPPED BY BOWSER!</p>')
+	$('.instructions').append('<p>COLLECT ENOUGH COINS AND FIND OUT HER LOCATION TO RESCUE HER!</p>')
+	$('.instructions').append('<p>BUT BEWARE, BOWSER AND HIS CROONIES WILL NOT GIVE UP</p>')
+	$('.instructions').append('<p>WITHOUT A FIGHT! WHAT ARE YOU WAITING FOR? GO SAVE HER!</p>')
 })
 
 
 //WINNER
 const winner = () => {
-	clearInterval(timePassing);
+	$('audio').remove();
 	clearInterval(ghostOneInterval);
-	$('.ghost').removeClass('ghost');
 	clearInterval(ghostTwoInterval);
 	clearInterval(ghostThreeInterval);
 	clearInterval(ghostFourInterval);
 	clearInterval(bowserInterval);
 	clearInterval(bonesOneInterval);
-	$('.bones').removeClass('bones');
 	clearInterval(bonesTwoInterval);
+	clearInterval(pacmanInterval);
+	clearInterval(timePassing);
+	$('.ghost').removeClass('ghost');
+	$('.bones').removeClass('bones');
 	$('.bowser').removeClass('bowser');
 	$('.fire').removeClass('fire');
+	$('.stats').empty();
+	$('.stats').text('YOU WON!');
+	$('body').append('<audio autoplay><source src="winning.mp3" type="audio/mpeg"></audio>');
+	// $('body').append('<div class = "again"></div>');
 
 	//stop bowser, ghosts, & bones & clears their divs
 	//clear divs below mario & peach
@@ -114,7 +134,7 @@ const pacman = {
 	x : 0,
 	y : 0,
 	direction : 'left',
-	points: 124,
+	points: 0,
 	lives: 2,
 	move(){
 		$('.pacman').removeClass('pacman');
@@ -133,21 +153,47 @@ const pacman = {
 			this.lives ++;
 			checkLives();
 		} else if(this.direction === 'left' && this.x > 0 && $(`.gameSquare[x="${this.x - 1}"][y="${this.y}"]`).hasClass('ghost')){
-			this.x = 0;
-			this.y = 0;
 			this.lives--;
-			checkLives();
+			if(this.lives > 0){
+				checkLives();
+				this.x = 0;
+				this.y = 0;
+			} else {
+				$(`.gameSquare[x="${this.x}"][y="${this.y}"]`).removeClass('pacman');
+				gameOver();
+			}
 		} else if(this.direction === 'left' && this.x > 0 && $(`.gameSquare[x="${this.x - 1}"][y="${this.y}"]`).hasClass('bones')){
-			this.x = 0;
-			this.y = 0;
+			// if(this.lives > 0){
+			// 	this.lives--;
+			// 	checkLives();
+			// 	this.x = 0;
+			// 	this.y = 0;
+			// 	} else {
+			// 		// $('.pacman').removeClass('pacman');
+			// 		gameOver()
+			// 	}
 			this.lives--;
-			checkLives();
+			if(this.lives > 0){
+				checkLives();
+				this.x = 0;
+				this.y = 0;
+			} else {
+				$(`.gameSquare[x="${this.x}"][y="${this.y}"]`).removeClass('pacman');
+				gameOver();
+			}
 		} else if(this.direction === 'left' && this.x > 0 && $(`.gameSquare[x="${this.x - 1}"][y="${this.y}"]`).hasClass('bowser')){
 			this.lives = 0;
 			checkLives();
 		} else if(this.direction === 'left' && this.x > 0 && $(`.gameSquare[x="${this.x - 1}"][y="${this.y}"]`).hasClass('fire')){
 			this.lives--;
-			checkLives();
+			if(this.lives > 0){
+				checkLives();
+				this.x = 0;
+				this.y = 0;
+			} else {
+				$(`.gameSquare[x="${this.x}"][y="${this.y}"]`).removeClass('pacman');
+				gameOver();
+			}
 		} else if(this.direction === 'left' && this.x > 0 && $(`.gameSquare[x="${this.x - 1}"][y="${this.y}"]`).hasClass('peach')){
 			winner();
 		} else if(this.direction === 'left' & this.x === 0 && this.y === 10){
@@ -191,21 +237,38 @@ const pacman = {
 			this.lives++;
 			checkLives();
 		} else if(this.direction === 'right' && this.x < 25 && $(`.gameSquare[x="${this.x + 1}"][y="${this.y}"]`).hasClass('ghost')){
-			this.x = 0;
-			this.y = 0;
 			this.lives--;
-			checkLives();
+			if(this.lives > 0){
+				checkLives();
+				this.x = 0;
+				this.y = 0;
+			} else {
+				$(`.gameSquare[x="${this.x}"][y="${this.y}"]`).removeClass('pacman');
+				gameOver();
+			}
 		} else if(this.direction === 'right' && this.x < 25 && $(`.gameSquare[x="${this.x + 1}"][y="${this.y}"]`).hasClass('bones')){
-			this.x = 0;
-			this.y = 0;
 			this.lives--;
-			checkLives();
+			if(this.lives > 0){
+				checkLives();
+				this.x = 0;
+				this.y = 0;
+			} else {
+				$(`.gameSquare[x="${this.x}"][y="${this.y}"]`).removeClass('pacman');
+				gameOver();
+			}
 		} else if(this.direction === 'right' && this.x < 25 && $(`.gameSquare[x="${this.x + 1}"][y="${this.y}"]`).hasClass('bowser')){
 			this.lives = 0;
 			checkLives();
 		} else if(this.direction === 'right' && this.x < 25 && $(`.gameSquare[x="${this.x + 1}"][y="${this.y}"]`).hasClass('fire')){
 			this.lives--;
-			checkLives();
+			if(this.lives > 0){
+				checkLives();
+				this.x = 0;
+				this.y = 0;
+			} else {
+				$(`.gameSquare[x="${this.x}"][y="${this.y}"]`).removeClass('pacman');
+				gameOver();
+			}
 		} else if(this.direction === 'right' & this.x === 25 && this.y === 10){
 			if(Math.random() > .33){
 				this.x = 0;
@@ -246,21 +309,38 @@ const pacman = {
 			this.lives++;
 			checkLives();
 		} else if(this.direction === 'up' && this.y < 14 && $(`.gameSquare[x="${this.x}"][y="${this.y + 1}"]`).hasClass('ghost')){
-			this.x = 0
-			this.y = 0;
 			this.lives--;
-			checkLives();
+			if(this.lives > 0){
+				checkLives();
+				this.x = 0;
+				this.y = 0;
+			} else {
+				$(`.gameSquare[x="${this.x}"][y="${this.y}"]`).removeClass('pacman');
+				gameOver();
+			}
 		} else if(this.direction === 'up' && this.y < 14 && $(`.gameSquare[x="${this.x}"][y="${this.y + 1}"]`).hasClass('bones')){
-			this.x = 0
-			this.y = 0;
 			this.lives--;
-			checkLives();
+			if(this.lives > 0){
+				checkLives();
+				this.x = 0;
+				this.y = 0;
+			} else {
+				$(`.gameSquare[x="${this.x}"][y="${this.y}"]`).removeClass('pacman');
+				gameOver();
+			}
 		} else if(this.direction === 'up' && this.y < 14 && $(`.gameSquare[x="${this.x}"][y="${this.y + 1}"]`).hasClass('bowser')){
 			this.lives = 0;
 			checkLives();
 		} else if(this.direction === 'up' && this.y < 14 && $(`.gameSquare[x="${this.x}"][y="${this.y + 1}"]`).hasClass('fire')){
 			this.lives--;
-			checkLives();
+			if(this.lives > 0){
+				checkLives();
+				this.x = 0;
+				this.y = 0;
+			} else {
+				$(`.gameSquare[x="${this.x}"][y="${this.y}"]`).removeClass('pacman');
+				gameOver();
+			}
 		} else if(this.direction === 'up' && this.y < 14){
 			this.y++;
 
@@ -279,32 +359,55 @@ const pacman = {
 			this.lives++;
 			checkLives();
 		} else if(this.direction === 'down' && this.y > 0 && $(`.gameSquare[x="${this.x}"][y="${this.y - 1}"]`).hasClass('ghost')){
-			this.y = 0;
-			this.x = 0;
 			this.lives--;
-			checkLives();
+			if(this.lives > 0){
+				checkLives();
+				this.x = 0;
+				this.y = 0;
+			} else {
+				$(`.gameSquare[x="${this.x}"][y="${this.y}"]`).removeClass('pacman');
+				gameOver();
+			}
 		} else if(this.direction === 'down' && this.y > 0 && $(`.gameSquare[x="${this.x}"][y="${this.y - 1}"]`).hasClass('bones')){
-			this.y = 0;
-			this.x = 0;
 			this.lives--;
-			checkLives();
+			if(this.lives > 0){
+				checkLives();
+				this.x = 0;
+				this.y = 0;
+			} else {
+				$(`.gameSquare[x="${this.x}"][y="${this.y}"]`).removeClass('pacman');
+				gameOver();
+			}
 		} else if(this.direction === 'down' && this.y > 0 && $(`.gameSquare[x="${this.x}"][y="${this.y - 1}"]`).hasClass('bowser')){
 			this.lives = 0;
 			checkLives();
 		} else if(this.direction === 'down' && this.y > 0 && $(`.gameSquare[x="${this.x}"][y="${this.y - 1}"]`).hasClass('fire')){
 			this.lives--;
-			checkLives();
+			if(this.lives > 0){
+				checkLives();
+				this.x = 0;
+				this.y = 0;
+			} else {
+				$(`.gameSquare[x="${this.x}"][y="${this.y}"]`).removeClass('pacman');
+				gameOver();
+			}
 		} else if(this.direction === 'down' && this.y > 0){
 			this.y--;
 		}
-		$(`.gameSquare[x="${this.x}"][y="${this.y}"]`).addClass('pacman');
+		if(this.lives > 0){
+			$(`.gameSquare[x="${this.x}"][y="${this.y}"]`).addClass('pacman');
+		} else{
+			gameOver();
+		}
+
 	}
 }
 
 const checkLives = () => {
 	$('.lives').text(`${pacman.lives}`);
 	if(pacman.lives <= 0){
-		gameOver();
+		$(`.gameSquare[x="${pacman.x}"][y="${pacman.y}"]`).removeClass('pacman');
+			gameOver();
 	}
 }
 
@@ -354,7 +457,7 @@ class Ghost {
 		} else if(this.direction === 'ghostUp' && this.y < this.maxY && $(`.gameSquare[x="${this.x}"][y="${this.y + 1}"]`).hasClass('pacman')){
 			$(`.gameSquare[x="${this.x}"][y="${this.y + 1}"]`).removeClass('pacman');
 			this.y++;
-			pacman.lives -= 1;
+			pacman.lives--;
 			checkLives();
 			pacman.x = 0;
 			pacman.y = 0;
@@ -591,7 +694,7 @@ const addGhostFour = () => {
 const addBowser = () => {
 	const bowser = new Bowser (13, 7, 18, 7, 11, 3, "ghostUp");
 	bowserInterval = setInterval(() => {bowser.move()},
-	160);
+	100);
 }
 
 //PRINCESS PEACH
@@ -860,7 +963,15 @@ class Bones {
 		} else if(this.direction === 'ghostUp' && this.y < this.maxY && $(`.gameSquare[x="${this.x}"][y="${this.y + 1}"]`).hasClass('pacman')){
 			$(`.gameSquare[x="${this.x}"][y="${this.y + 1}"]`).removeClass('pacman');
 			this.y++;
-			pacman.lives --;
+			// if(pacman.lives > 0){
+			// 	pacman.lives --;
+			// checkLives();
+			// pacman.x = 0;
+			// pacman.y = 0;
+			// } else {
+			// 	gameOver();
+			// }
+			pacman.lives--;
 			checkLives();
 			pacman.x = 0;
 			pacman.y = 0;
@@ -879,6 +990,14 @@ class Bones {
 		} else if(this.direction === 'ghostDown' && this.y > this.minY && $(`.gameSquare[x="${this.x}"][y="${this.y - 1}"]`).hasClass('pacman')){
 			$(`.gameSquare[x="${this.x}"][y="${this.y - 1}"]`).removeClass('pacman');
 			this.y--;
+			// if(pacman.lives > 0){
+			// 	pacman.lives --;
+			// checkLives();
+			// pacman.x = 0;
+			// pacman.y = 0;
+			// } else {
+			// 	gameOver();
+			// }
 			pacman.lives--;
 			checkLives();
 			pacman.x = 0;

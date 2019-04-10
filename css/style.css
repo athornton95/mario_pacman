@@ -4,15 +4,16 @@
     outline: none;
 }
 
-
 body {
 	font-family: 'Press Start 2P', cursive;
 	background-image: url('../images/mainTwo.jpg');
 	background-repeat: no-repeat;
 	/*background-position: center;*/
-	background-size: 100%;
+	background-size: cover;
+	/*margin: auto;*/
 	color: white;
-
+	/*background-position: center center;*/
+	/*resize: both;*/
 }
 
 .buttons {
@@ -36,6 +37,11 @@ body {
 	margin-right: 10px;
 }
 
+.instructions {
+	text-align: center;
+	margin-top: 35px;
+	color: yellow;
+}
 
 .stats {
 	color: yellow;
