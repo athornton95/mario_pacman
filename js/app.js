@@ -93,6 +93,7 @@ $('#playGame').on('click', () => {
 
 $('#instructions').on('click', () => {
 	console.log('this clicks');
+	$('.instructions').empty();
 	$('.instructions').append('<p>PRINCESS PEACH HAS BEEN KIDNAPPED BY BOWSER!</p>')
 	$('.instructions').append('<p>COLLECT ENOUGH COINS AND FIND OUT HER LOCATION TO RESCUE HER!</p>')
 	$('.instructions').append('<p>BUT BEWARE, BOWSER AND HIS CROONIES WILL NOT GIVE UP</p>')
