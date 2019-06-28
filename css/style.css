@@ -7,9 +7,9 @@
 body {
 	font-family: 'Press Start 2P', cursive;
 	background-image: url('../images/mainTwo.jpg');
-	background-repeat: no-repeat;
-	/*background-position: center;*/
-	background-size: relative;
+	/* background-repeat: no-repeat; */
+	background-position: top;
+	background-size: cover;
 	color: white;
 }
 
